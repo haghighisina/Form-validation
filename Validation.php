@@ -21,21 +21,21 @@
 </html>
 <?php
 $server = "localhost";
-$name = "root";
-$pass = "";
+$name   = "root";
+$pass   = "";
 $dbName = "web";
 $bace = mysqli_connect($server,$name,$pass,$dbName);
 if (!$bace){
     die("connection failed :".mysqli_connect_error());
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $name =  test_input(mysqli_real_escape_string($bace, $_POST['name']));
-    $email =  test_input(mysqli_real_escape_string($bace, $_POST['email']));
+    $name   =  test_input(mysqli_real_escape_string($bace, $_POST['name']));
+    $email  =  test_input(mysqli_real_escape_string($bace, $_POST['email']));
     $select = "SELECT * FROM `user`";
     $con = mysqli_stmt_init($bace);
     $prepare = mysqli_stmt_prepare($con,$select);
     $execute = mysqli_stmt_execute($con);
-    $result = mysqli_stmt_get_result($con);
+    $result  = mysqli_stmt_get_result($con);
     if (empty($name)){
         $name_error = "name is required";
     }elseif(is_numeric($name)){
@@ -56,9 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
 }
 function test_input($data){
+    
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
+    $data = addslashes($data);
+    $data = strip_tags($data);
+    
     return $data;
 }
 ?>
